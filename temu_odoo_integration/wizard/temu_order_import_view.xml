@@ -27,7 +27,7 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem id="menu_temu_operations" name="Operations" parent="menu_temu_root" sequence="10"/>
+    <menuitem id="menu_temu_operations" name="Orders" parent="menu_temu_root" sequence="10"/>
     <menuitem id="menu_temu_orders" name="Temu Orders" parent="menu_temu_operations" action="action_temu_orders" sequence="5"/>
     <menuitem id="menu_temu_order_import" name="Import Orders" parent="menu_temu_operations" action="action_temu_order_import" sequence="10"/>
 </odoo>

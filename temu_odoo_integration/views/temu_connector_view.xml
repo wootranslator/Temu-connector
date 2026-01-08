@@ -120,6 +120,7 @@
         <field name="name">Temu Dashboard</field>
         <field name="res_model">temu.connector</field>
         <field name="view_mode">kanban,list,form</field>
+        <field name="target">new</field>
     </record>
 
     <!-- Specific Sale Order View for Temu -->
@@ -165,7 +166,7 @@
     <!-- Menus -->
     <menuitem id="menu_temu_root" name="Temu Integration" sequence="10" web_icon="temu_odoo_integration,static/description/icon.png"/>
     <menuitem id="menu_temu_config" name="Configuration" parent="menu_temu_root" sequence="100"/>
-    <menuitem id="menu_temu_connector" name="Connectors" parent="menu_temu_config" action="action_temu_connector" sequence="10"/>
+    <menuitem id="menu_temu_connector" name="Marketplaces" parent="menu_temu_config" action="action_temu_connector" sequence="10"/>
     
     <menuitem id="menu_temu_mappings" name="Mappings" parent="menu_temu_root" sequence="20"/>
     <menuitem id="menu_temu_mapping_product" name="SKU Mappings" parent="menu_temu_mappings" action="action_temu_mapping_product" sequence="10"/>
