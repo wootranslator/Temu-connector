@@ -21,6 +21,7 @@
                 <header>
                     <button name="action_confirm" string="Confirm" type="object" invisible="state == 'confirmed'"/>
                     <button name="action_draft" string="Reset to Draft" type="object" invisible="state == 'draft'"/>
+                    <button name="action_sync_shipping_methods" string="Sync Shipping Methods" type="object" invisible="state != 'confirmed'" class="btn-secondary"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -48,9 +49,44 @@
                             </group>
                         </page>
                         <page string="Product Mapping">
-                            <group>
-                                <p>Manage SKU mappings in the Mappings menu.</p>
-                            </group>
+                            <field name="product_mapping_ids">
+                                <list editable="bottom">
+                                    <field name="temu_sku"/>
+                                    <field name="product_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Fiscal Mapping">
+                            <field name="fiscal_mapping_ids">
+                                <list editable="bottom">
+                                    <field name="temu_region"/>
+                                    <field name="fiscal_position_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Payment Mapping">
+                            <field name="payment_mapping_ids">
+                                <list editable="bottom">
+                                    <field name="temu_payment_method"/>
+                                    <field name="journal_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Shipping Mapping">
+                            <field name="shipping_mapping_ids">
+                                <list editable="bottom">
+                                    <field name="temu_shipping_method"/>
+                                    <field name="carrier_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Tax Mapping">
+                            <field name="tax_mapping_ids">
+                                <list editable="bottom">
+                                    <field name="temu_tax_name"/>
+                                    <field name="tax_id"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

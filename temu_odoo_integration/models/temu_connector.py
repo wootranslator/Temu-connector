@@ -33,6 +33,13 @@ class TemuConnector(models.Model):
         ('confirmed', 'Confirmed'),
     ], string='Status', default='draft')
 
+    # Mapping Relationships
+    product_mapping_ids = fields.One2many('temu.mapping.product', 'connector_id', string='Product Mappings')
+    fiscal_mapping_ids = fields.One2many('temu.mapping.fiscal', 'connector_id', string='Fiscal Mappings')
+    payment_mapping_ids = fields.One2many('temu.mapping.payment', 'connector_id', string='Payment Mappings')
+    shipping_mapping_ids = fields.One2many('temu.mapping.shipping', 'connector_id', string='Shipping Mappings')
+    tax_mapping_ids = fields.One2many('temu.mapping.tax', 'connector_id', string='Tax Mappings')
+
     def _compute_order_stats(self):
         for record in self:
             orders = self.env['sale.order'].search([('temu_order_id', '!=', False)])
@@ -64,3 +71,33 @@ class TemuConnector(models.Model):
 
     def action_draft(self):
         self.state = 'draft'
+
+    def action_sync_shipping_methods(self):
+        """Fetch shipping methods from Temu API and populate mappings."""
+        self.ensure_one()
+        # Simulated API call to get shipping methods
+        mock_methods = ['Standard Shipping', 'Express Shipping', 'Economic Shipping']
+        
+        Mapping = self.env['temu.mapping.shipping']
+        created_count = 0
+        for method_name in mock_methods:
+            existing = Mapping.search([
+                ('connector_id', '=', self.id),
+                ('temu_shipping_method', '=', method_name)
+            ])
+            if not existing:
+                Mapping.create({
+                    'connector_id': self.id,
+                    'temu_shipping_method': method_name,
+                })
+                created_count += 1
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Shipping Sync Complete'),
+                'message': _('%s new shipping methods found and added to mappings.') % created_count,
+                'sticky': False,
+            }
+        }

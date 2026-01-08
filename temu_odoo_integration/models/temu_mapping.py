@@ -30,7 +30,7 @@ class TemuMappingShipping(models.Model):
 
     connector_id = fields.Many2one('temu.connector', string='Connector', required=True)
     temu_shipping_method = fields.Char(string='Temu Shipping Method', required=True)
-    carrier_id = fields.Many2one('delivery.carrier', string='Odoo Carrier', required=True)
+    carrier_id = fields.Many2one('delivery.carrier', string='Odoo Carrier')
 
 class TemuMappingTax(models.Model):
     _name = 'temu.mapping.tax'

@@ -1,6 +1,6 @@
 {
     'name': 'Temu Odoo Integration',
-    'version': '18.0.1.0.0',
+    'version': '18.1.1.10',
     'category': 'Sales',
     'summary': 'Import sales orders from Temu to Odoo 18',
     'description': """
