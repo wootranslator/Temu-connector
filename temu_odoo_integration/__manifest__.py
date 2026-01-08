@@ -11,6 +11,7 @@
     'depends': ['sale_management', 'stock', 'delivery'],
     'data': [
         'security/ir.model.access.csv',
+        'data/temu_data.xml',
         'views/temu_connector_view.xml',
         'wizard/temu_order_import_view.xml',
     ],

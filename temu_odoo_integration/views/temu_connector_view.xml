@@ -62,7 +62,7 @@
         <field name="name">temu.connector.kanban</field>
         <field name="model">temu.connector</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard" create="false">
+            <kanban class="oe_background_grey o_kanban_dashboard" create="true" on_create="action_open_marketplace_form">
                 <field name="name"/>
                 <field name="pending_orders_count"/>
                 <field name="shipped_orders_count"/>
@@ -80,8 +80,8 @@
                             <div class="container o_kanban_card_content">
                                 <div class="row">
                                     <div class="col-6 o_kanban_primary_left">
-                                        <button class="btn btn-primary" name="%(action_temu_order_import)d" type="action">
-                                            Import Orders
+                                        <button class="btn btn-primary" name="action_open_marketplace_form" type="object">
+                                            Configuration
                                         </button>
                                     </div>
                                     <div class="col-6 o_kanban_primary_right">
@@ -116,10 +116,9 @@
     </record>
 
     <record id="action_temu_connector" model="ir.actions.act_window">
-        <field name="name">Temu Dashboard</field>
+        <field name="name">Marketplaces Dashboard</field>
         <field name="res_model">temu.connector</field>
         <field name="view_mode">kanban,list,form</field>
-        <field name="target">new</field>
     </record>
 
     <!-- Specific Sale Order View for Temu -->

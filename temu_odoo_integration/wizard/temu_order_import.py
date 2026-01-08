@@ -93,7 +93,7 @@ class TemuOrderImport(models.TransientModel):
                 'temu_order_id': order_data['order_id'],
                 'temu_transaction_id': order_data.get('transaction_id'),
                 'is_temu_order': True,
-                'team_id': self.connector_id.team_id.id,
+                'team_id': self.connector_id.team_id.id if self.connector_id.team_id else self.env.ref('temu_odoo_integration.sales_team_temu', raise_if_not_found=False).id,
                 'pricelist_id': self.connector_id.pricelist_id.id if self.connector_id.price_source == 'pricelist' else partner.property_product_pricelist.id,
                 'order_line': [(0, 0, {
                     'product_id': product.id,

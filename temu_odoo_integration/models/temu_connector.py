@@ -19,7 +19,7 @@ class TemuConnector(models.Model):
         ('pricelist', 'Use Odoo Pricelist'),
     ], string='Price Source', default='marketplace', required=True, help="Choose whether to use the price provided by the marketplace or calculate it using an Odoo pricelist.")
     pricelist_id = fields.Many2one('product.pricelist', string='Default Pricelist')
-    team_id = fields.Many2one('crm.team', string='Sales Team')
+    team_id = fields.Many2one('crm.team', string='Sales Team', default=lambda self: self.env.ref('temu_odoo_integration.sales_team_temu', raise_if_not_found=False))
     default_journal_id = fields.Many2one('account.journal', string='Default Payment Journal')
     api_url = fields.Char(string='API URL', compute='_compute_api_url', store=True, readonly=False)
     
@@ -50,6 +50,17 @@ class TemuConnector(models.Model):
             record.total_orders_count = self.env['sale.order'].search_count([
                 ('is_temu_order', '=', True)
             ])
+
+    def action_open_marketplace_form(self):
+        """Returns an action to open the form view in a modal."""
+        return {
+            'name': _('Marketplace Configuration'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'temu.connector',
+            'view_mode': 'form',
+            'res_id': self.id if self.id else False,
+            'target': 'new',
+        }
 
     @api.depends('environment')
     def _compute_api_url(self):
