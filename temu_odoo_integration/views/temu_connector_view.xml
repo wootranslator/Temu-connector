@@ -59,10 +59,76 @@
         </field>
     </record>
 
+    <record id="view_temu_connector_kanban" model="ir.ui.view">
+        <field name="name">temu.connector.kanban</field>
+        <field name="model">temu.connector</field>
+        <field name="arch" type="xml">
+            <kanban class="oe_background_grey o_kanban_dashboard" create="false">
+                <field name="name"/>
+                <field name="pending_orders_count"/>
+                <field name="shipped_orders_count"/>
+                <field name="total_orders_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <field name="name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_primary_left">
+                                        <button class="btn btn-primary" name="%(action_temu_order_import)d" type="action">
+                                            Import Orders
+                                        </button>
+                                    </div>
+                                    <div class="col-6 o_kanban_primary_right">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <a name="%(sale.action_orders)d" type="action" context="{'search_default_draft': 1, 'search_default_is_temu_order': 1}">
+                                                    Pending
+                                                </a>
+                                            </div>
+                                            <div class="col-3 text-right">
+                                                <field name="pending_orders_count"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <a name="%(sale.action_orders)d" type="action" context="{'search_default_is_temu_order': 1}">
+                                                    Total Orders
+                                                </a>
+                                            </div>
+                                            <div class="col-3 text-right">
+                                                <field name="total_orders_count"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="action_temu_connector" model="ir.actions.act_window">
-        <field name="name">Temu Connectors</field>
+        <field name="name">Temu Dashboard</field>
         <field name="res_model">temu.connector</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <!-- Specific Sale Order View for Temu -->
+    <record id="action_temu_orders" model="ir.actions.act_window">
+        <field name="name">Temu Orders</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('is_temu_order', '=', True)]</field>
+        <field name="context">{'default_is_temu_order': True}</field>
     </record>
 
     <!-- Mapping Views -->

@@ -22,10 +22,34 @@ class TemuConnector(models.Model):
     team_id = fields.Many2one('crm.team', string='Sales Team')
     default_journal_id = fields.Many2one('account.journal', string='Default Payment Journal')
     api_url = fields.Char(string='API URL', compute='_compute_api_url', store=True, readonly=False)
+    
+    # Dashboard Fields
+    pending_orders_count = fields.Integer(compute='_compute_order_stats')
+    shipped_orders_count = fields.Integer(compute='_compute_order_stats')
+    total_orders_count = fields.Integer(compute='_compute_order_stats')
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
     ], string='Status', default='draft')
+
+    def _compute_order_stats(self):
+        for record in self:
+            orders = self.env['sale.order'].search([('temu_order_id', '!=', False)])
+            # This is a bit simplified, usually you'd filter by a field linking to the connector
+            # For now, we assume all temu orders in this instance belong to the active connectors proportionally 
+            # or we filter by something specific. Let's refer to sale_order having is_temu_order.
+            record.pending_orders_count = self.env['sale.order'].search_count([
+                ('is_temu_order', '=', True),
+                ('state', '=', 'draft')
+            ])
+            record.shipped_orders_count = self.env['sale.order'].search_count([
+                ('is_temu_order', '=', True),
+                ('picking_ids.state', '=', 'done')
+            ])
+            record.total_orders_count = self.env['sale.order'].search_count([
+                ('is_temu_order', '=', True)
+            ])
 
     @api.depends('environment')
     def _compute_api_url(self):
