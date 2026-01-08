@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 
 class TemuConnector(models.Model):
     _name = 'temu.connector'
@@ -32,13 +32,6 @@ class TemuConnector(models.Model):
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
     ], string='Status', default='draft')
-
-    # Mapping Relationships
-    product_mapping_ids = fields.One2many('temu.mapping.product', 'connector_id', string='Product Mappings')
-    fiscal_mapping_ids = fields.One2many('temu.mapping.fiscal', 'connector_id', string='Fiscal Mappings')
-    payment_mapping_ids = fields.One2many('temu.mapping.payment', 'connector_id', string='Payment Mappings')
-    shipping_mapping_ids = fields.One2many('temu.mapping.shipping', 'connector_id', string='Shipping Mappings')
-    tax_mapping_ids = fields.One2many('temu.mapping.tax', 'connector_id', string='Tax Mappings')
 
     def _compute_order_stats(self):
         for record in self:
