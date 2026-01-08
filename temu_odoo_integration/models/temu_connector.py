@@ -13,6 +13,14 @@ class TemuConnector(models.Model):
         ('sandbox', 'Sandbox'),
     ], string='Environment', default='sandbox', required=True)
     auto_confirm_paid_orders = fields.Boolean(string='Auto-confirm Paid Orders', default=False, help="Automatically confirm sale orders if a valid payment transaction is found.")
+    order_prefix = fields.Char(string='Order Prefix', default='TEMU', help="Prefix for sale orders imported from this connector.")
+    price_source = fields.Selection([
+        ('marketplace', 'Use Marketplace Price'),
+        ('pricelist', 'Use Odoo Pricelist'),
+    ], string='Price Source', default='marketplace', required=True)
+    pricelist_id = fields.Many2one('product.pricelist', string='Default Pricelist')
+    team_id = fields.Many2one('crm.team', string='Sales Team')
+    default_journal_id = fields.Many2one('account.journal', string='Default Payment Journal')
     api_url = fields.Char(string='API URL', compute='_compute_api_url', store=True, readonly=False)
     state = fields.Selection([
         ('draft', 'Draft'),

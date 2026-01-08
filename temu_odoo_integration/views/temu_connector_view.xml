@@ -42,6 +42,9 @@
                         <page string="Workflow">
                             <group string="Automation">
                                 <field name="auto_confirm_paid_orders"/>
+                                <field name="order_prefix"/>
+                                <field name="price_source"/>
+                                <field name="pricelist_id" invisible="price_source != 'pricelist'"/>
                             </group>
                         </page>
                         <page string="Product Mapping">
@@ -87,6 +90,12 @@
         <field name="view_mode">list</field>
     </record>
 
+    <record id="action_temu_mapping_tax" model="ir.actions.act_window">
+        <field name="name">Tax Mappings</field>
+        <field name="res_model">temu.mapping.tax</field>
+        <field name="view_mode">list</field>
+    </record>
+
     <!-- Menus -->
     <menuitem id="menu_temu_root" name="Temu Integration" sequence="10" web_icon="temu_odoo_integration,static/description/icon.png"/>
     <menuitem id="menu_temu_config" name="Configuration" parent="menu_temu_root" sequence="100"/>
@@ -95,4 +104,6 @@
     <menuitem id="menu_temu_mappings" name="Mappings" parent="menu_temu_root" sequence="20"/>
     <menuitem id="menu_temu_mapping_product" name="SKU Mappings" parent="menu_temu_mappings" action="action_temu_mapping_product" sequence="10"/>
     <menuitem id="menu_temu_mapping_shipping" name="Shipping Mappings" parent="menu_temu_mappings" action="action_temu_mapping_shipping" sequence="20"/>
+    <menuitem id="menu_temu_mapping_fiscal" name="Fiscal Mappings" parent="menu_temu_mappings" action="action_temu_mapping_product" sequence="30"/>
+    <menuitem id="menu_temu_mapping_tax" name="Tax Mappings" parent="menu_temu_mappings" action="action_temu_mapping_tax" sequence="40"/>
 </odoo>

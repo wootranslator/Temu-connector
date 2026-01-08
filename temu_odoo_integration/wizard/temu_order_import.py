@@ -13,14 +13,19 @@ class TemuOrderImport(models.TransientModel):
     date_to = fields.Datetime(string='Date To')
 
     def _find_or_create_partner(self, order_data):
-        """Deduplicate partners by name/email/temu_id (if available)."""
+        """Deduplicate partners by VAT (CIF), email, or name."""
         Partner = self.env['res.partner']
-        # In a real API, we might have a temu_partner_id or email
+        vat = order_data.get('vat')
         email = order_data.get('email')
         name = order_data.get('partner_name')
         
         partner = False
-        if email:
+        if vat:
+            # Clean VAT string to ensure consistency
+            vat = vat.strip().replace(" ", "").upper()
+            partner = Partner.search([('vat', '=', vat)], limit=1)
+            
+        if not partner and email:
             partner = Partner.search([('email', '=', email)], limit=1)
         
         if not partner and name:
@@ -30,7 +35,9 @@ class TemuOrderImport(models.TransientModel):
             partner = Partner.create({
                 'name': name,
                 'email': email,
+                'vat': vat,
                 'is_company': False,
+                'country_id': self.env.ref('base.es').id if order_data.get('region') == 'ES' else False,
             })
         return partner
 
@@ -54,6 +61,8 @@ class TemuOrderImport(models.TransientModel):
                 'transaction_id': 'TXN-998877',
                 'payment_status': 'paid',
                 'email': 'juan.perez@example.com',
+                'vat': 'B12345678',
+                'tax_name': 'VAT 21%',
             }
         ]
         
@@ -79,17 +88,35 @@ class TemuOrderImport(models.TransientModel):
             partner = self._find_or_create_partner(order_data)
             
             # 4. Create Sale Order
-            sale_order = self.env['sale.order'].create({
+            sale_order_vals = {
                 'partner_id': partner.id,
                 'temu_order_id': order_data['order_id'],
                 'temu_transaction_id': order_data.get('transaction_id'),
                 'is_temu_order': True,
+                'team_id': self.connector_id.team_id.id,
+                'pricelist_id': self.connector_id.pricelist_id.id if self.connector_id.price_source == 'pricelist' else partner.property_product_pricelist.id,
                 'order_line': [(0, 0, {
                     'product_id': product.id,
                     'product_uom_qty': order_data['qty'],
-                    'price_unit': order_data['price'],
+                    'price_unit': order_data['price'] if self.connector_id.price_source == 'marketplace' else 0.0,
                 })]
-            })
+            }
+            
+            # Application of Order Prefix
+            if self.connector_id.order_prefix:
+                # We can either override the name or let Odoo sequence it and just store the prefix
+                # Here we will prepend the prefix to the Temu ID for the Odoo name
+                sale_order_vals['name'] = f"{self.connector_id.order_prefix}/{order_data['order_id']}"
+            
+            sale_order = self.env['sale.order'].create(sale_order_vals)
+            
+            # 4b. Apply Taxes if mapped
+            tax_mapping = self.env['temu.mapping.tax'].search([
+                ('connector_id', '=', self.connector_id.id),
+                ('temu_tax_name', '=', order_data.get('tax_name'))
+            ], limit=1)
+            if tax_mapping:
+                sale_order.order_line.write({'tax_id': [(6, 0, [tax_mapping.tax_id.id])]})
             
             # 5. Handle Fiscal Mapping (Simplified)
             fiscal_mapping = self.env['temu.mapping.fiscal'].search([
@@ -124,9 +151,21 @@ class TemuOrderImport(models.TransientModel):
         ], limit=1)
         
         if payment_mapping:
-            # Simulated payment registration
+            # Create a payment record in Odoo
             _logger.info("Registering payment for order %s using journal %s", sale_order.name, payment_mapping.journal_id.name)
-            # In Odoo 18, we would create account.payment or bank statement line
+            
+            # In Odoo 18, we use account.payment or bank statements. 
+            # Here we create a simple payment tied to the order's invoice or just as a standalone payment.
+            payment = self.env['account.payment'].create({
+                'amount': sale_order.amount_total,
+                'payment_type': 'inbound',
+                'partner_type': 'customer',
+                'partner_id': sale_order.partner_id.id,
+                'journal_id': payment_mapping.journal_id.id,
+                'ref': f"Temu Payment for {sale_order.temu_order_id} (TX: {order_data.get('transaction_id')})",
+            })
+            payment.action_post()
+            # If the order is invoiced, we would reconcile here.
             
         return {
             'type': 'ir.actions.client',
