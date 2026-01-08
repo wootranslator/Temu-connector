@@ -25,22 +25,22 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" placeholder="Connector Name"/></h1>
+                        <h1><field name="name" placeholder="Marketplace Name"/></h1>
                     </div>
                     <group>
-                        <group string="API Credentials">
+                        <group string="API CREDENTIALS">
                             <field name="client_id"/>
                             <field name="client_secret" password="1"/>
                             <field name="access_token"/>
                         </group>
-                        <group string="Endpoint">
+                        <group string="ENDPOINT">
                             <field name="environment" widget="radio" options="{'horizontal': True}"/>
                             <field name="api_url"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Workflow">
-                            <group string="Automation">
+                            <group string="AUTOMATION">
                                 <field name="auto_confirm_paid_orders"/>
                                 <field name="order_prefix"/>
                                 <field name="price_source"/>
@@ -48,10 +48,9 @@
                             </group>
                         </page>
                         <page string="Product Mapping">
-                            <field name="id" invisible="1"/>
-                            <field name="id" invisible="1"/> <!-- Dummy to avoid issues -->
-                            <!-- Here we would ideally have a one2many or just link to the mapping records -->
-                            <p>Manage SKU mappings in the Mappings menu.</p>
+                            <group>
+                                <p>Manage SKU mappings in the Mappings menu.</p>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
