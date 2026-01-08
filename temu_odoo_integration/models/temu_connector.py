@@ -51,17 +51,6 @@ class TemuConnector(models.Model):
                 ('is_temu_order', '=', True)
             ])
 
-    def action_open_marketplace_form(self):
-        """Returns an action to open the form view in a modal."""
-        return {
-            'name': _('Marketplace Configuration'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'temu.connector',
-            'view_mode': 'form',
-            'res_id': self.id if self.id else False,
-            'target': 'new',
-        }
-
     @api.depends('environment')
     def _compute_api_url(self):
         for record in self:

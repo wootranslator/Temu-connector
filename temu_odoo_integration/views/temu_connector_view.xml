@@ -58,11 +58,18 @@
         </field>
     </record>
 
+    <record id="action_temu_connector_form_modal" model="ir.actions.act_window">
+        <field name="name">Marketplace Configuration</field>
+        <field name="res_model">temu.connector</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
     <record id="view_temu_connector_kanban" model="ir.ui.view">
         <field name="name">temu.connector.kanban</field>
         <field name="model">temu.connector</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard" create="true" on_create="action_open_marketplace_form">
+            <kanban class="oe_background_grey o_kanban_dashboard" create="true" on_create="temu_odoo_integration.action_temu_connector_form_modal">
                 <field name="name"/>
                 <field name="pending_orders_count"/>
                 <field name="shipped_orders_count"/>
@@ -80,7 +87,7 @@
                             <div class="container o_kanban_card_content">
                                 <div class="row">
                                     <div class="col-6 o_kanban_primary_left">
-                                        <button class="btn btn-primary" name="action_open_marketplace_form" type="object">
+                                        <button class="btn btn-primary" name="%(action_temu_connector_form_modal)d" type="action">
                                             Configuration
                                         </button>
                                     </div>
@@ -143,9 +150,69 @@
         </field>
     </record>
 
+    <record id="view_temu_mapping_fiscal_tree" model="ir.ui.view">
+        <field name="name">temu.mapping.fiscal.tree</field>
+        <field name="model">temu.mapping.fiscal</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="connector_id"/>
+                <field name="temu_region"/>
+                <field name="fiscal_position_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_temu_mapping_payment_tree" model="ir.ui.view">
+        <field name="name">temu.mapping.payment.tree</field>
+        <field name="model">temu.mapping.payment</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="connector_id"/>
+                <field name="temu_payment_method"/>
+                <field name="journal_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_temu_mapping_shipping_tree" model="ir.ui.view">
+        <field name="name">temu.mapping.shipping.tree</field>
+        <field name="model">temu.mapping.shipping</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="connector_id"/>
+                <field name="temu_shipping_method"/>
+                <field name="carrier_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_temu_mapping_tax_tree" model="ir.ui.view">
+        <field name="name">temu.mapping.tax.tree</field>
+        <field name="model">temu.mapping.tax</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="connector_id"/>
+                <field name="temu_tax_name"/>
+                <field name="tax_id"/>
+            </list>
+        </field>
+    </record>
+
     <record id="action_temu_mapping_product" model="ir.actions.act_window">
         <field name="name">SKU Mappings</field>
         <field name="res_model">temu.mapping.product</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="action_temu_mapping_fiscal" model="ir.actions.act_window">
+        <field name="name">Fiscal Mappings</field>
+        <field name="res_model">temu.mapping.fiscal</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="action_temu_mapping_payment" model="ir.actions.act_window">
+        <field name="name">Payment Mappings</field>
+        <field name="res_model">temu.mapping.payment</field>
         <field name="view_mode">list</field>
     </record>
 
@@ -169,6 +236,7 @@
     <menuitem id="menu_temu_mappings" name="Mappings" parent="menu_temu_root" sequence="20"/>
     <menuitem id="menu_temu_mapping_product" name="SKU Mappings" parent="menu_temu_mappings" action="action_temu_mapping_product" sequence="10"/>
     <menuitem id="menu_temu_mapping_shipping" name="Shipping Mappings" parent="menu_temu_mappings" action="action_temu_mapping_shipping" sequence="20"/>
-    <menuitem id="menu_temu_mapping_fiscal" name="Fiscal Mappings" parent="menu_temu_mappings" action="action_temu_mapping_product" sequence="30"/>
-    <menuitem id="menu_temu_mapping_tax" name="Tax Mappings" parent="menu_temu_mappings" action="action_temu_mapping_tax" sequence="40"/>
+    <menuitem id="menu_temu_mapping_payment" name="Payment Mappings" parent="menu_temu_mappings" action="action_temu_mapping_payment" sequence="30"/>
+    <menuitem id="menu_temu_mapping_fiscal" name="Fiscal Mappings" parent="menu_temu_mappings" action="action_temu_mapping_fiscal" sequence="40"/>
+    <menuitem id="menu_temu_mapping_tax" name="Tax Mappings" parent="menu_temu_mappings" action="action_temu_mapping_tax" sequence="50"/>
 </odoo>
