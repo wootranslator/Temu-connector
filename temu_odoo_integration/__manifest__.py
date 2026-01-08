@@ -14,8 +14,10 @@
         'data/temu_data.xml',
         'views/temu_connector_view.xml',
         'wizard/temu_order_import_view.xml',
+        'wizard/temu_dummy_wizard_view.xml',
     ],
     'installable': True,
     'application': True,
+    'post_init_hook': 'post_init_hook',
     'license': 'LGPL-3',
 }
