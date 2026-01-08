@@ -50,42 +50,42 @@
                         </page>
                         <page string="Product Mapping">
                             <field name="product_mapping_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="temu_sku"/>
                                     <field name="product_id"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Fiscal Mapping">
                             <field name="fiscal_mapping_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="temu_region"/>
                                     <field name="fiscal_position_id"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Payment Mapping">
                             <field name="payment_mapping_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="temu_payment_method"/>
                                     <field name="journal_id"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Shipping Mapping">
                             <field name="shipping_mapping_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="temu_shipping_method"/>
                                     <field name="carrier_id"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Tax Mapping">
                             <field name="tax_mapping_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="temu_tax_name"/>
                                     <field name="tax_id"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>
