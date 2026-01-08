@@ -1,6 +1,6 @@
 {
     'name': 'Temu Odoo Integration',
-    'version': '18.1.1.12',
+    'version': '18.1.1.13',
     'category': 'Sales',
     'summary': 'Import sales orders from Temu to Odoo 18',
     'description': """
@@ -8,7 +8,7 @@
         Includes SKU mapping, fiscal position mapping, payment mapping, and tracking synchronization.
     """,
     'author': 'Antigravity',
-    'depends': ['sale_management', 'stock', 'delivery'],
+    'depends': ['sale_management', 'stock', 'delivery', 'crm', 'account'],
     'data': [
         'security/ir.model.access.csv',
         'data/temu_data.xml',
