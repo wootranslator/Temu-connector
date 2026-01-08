@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Connector View -->
+    <!-- Actions (Moved to TOP to avoid forward-reference errors) -->
+    <record id="action_temu_connector_form_modal" model="ir.actions.act_window">
+        <field name="name">Marketplace Configuration</field>
+        <field name="res_model">temu.connector</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_temu_orders" model="ir.actions.act_window">
+        <field name="name">Temu Orders</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('is_temu_order', '=', True)]</field>
+        <field name="context">{'default_is_temu_order': True}</field>
+    </record>
+
+    <!-- UI Components -->
     <record id="view_temu_connector_tree" model="ir.ui.view">
         <field name="name">temu.connector.tree</field>
         <field name="model">temu.connector</field>
@@ -94,13 +110,6 @@
         </field>
     </record>
 
-    <record id="action_temu_connector_form_modal" model="ir.actions.act_window">
-        <field name="name">Marketplace Configuration</field>
-        <field name="res_model">temu.connector</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
-
     <record id="view_temu_connector_kanban" model="ir.ui.view">
         <field name="name">temu.connector.kanban</field>
         <field name="model">temu.connector</field>
@@ -164,16 +173,7 @@
         <field name="view_mode">kanban,list,form</field>
     </record>
 
-    <!-- Specific Sale Order View for Temu -->
-    <record id="action_temu_orders" model="ir.actions.act_window">
-        <field name="name">Temu Orders</field>
-        <field name="res_model">sale.order</field>
-        <field name="view_mode">list,form,kanban</field>
-        <field name="domain">[('is_temu_order', '=', True)]</field>
-        <field name="context">{'default_is_temu_order': True}</field>
-    </record>
-
-    <!-- Mapping Views -->
+    <!-- Mapping Tree Views (Optional, for standalone use) -->
     <record id="view_temu_mapping_product_tree" model="ir.ui.view">
         <field name="name">temu.mapping.product.tree</field>
         <field name="model">temu.mapping.product</field>
@@ -198,42 +198,7 @@
         </field>
     </record>
 
-    <record id="view_temu_mapping_payment_tree" model="ir.ui.view">
-        <field name="name">temu.mapping.payment.tree</field>
-        <field name="model">temu.mapping.payment</field>
-        <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="connector_id"/>
-                <field name="temu_payment_method"/>
-                <field name="journal_id"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="view_temu_mapping_shipping_tree" model="ir.ui.view">
-        <field name="name">temu.mapping.shipping.tree</field>
-        <field name="model">temu.mapping.shipping</field>
-        <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="connector_id"/>
-                <field name="temu_shipping_method"/>
-                <field name="carrier_id"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="view_temu_mapping_tax_tree" model="ir.ui.view">
-        <field name="name">temu.mapping.tax.tree</field>
-        <field name="model">temu.mapping.tax</field>
-        <field name="arch" type="xml">
-            <list editable="bottom">
-                <field name="connector_id"/>
-                <field name="temu_tax_name"/>
-                <field name="tax_id"/>
-            </list>
-        </field>
-    </record>
-
+    <!-- Mapping Actions -->
     <record id="action_temu_mapping_product" model="ir.actions.act_window">
         <field name="name">SKU Mappings</field>
         <field name="res_model">temu.mapping.product</field>
