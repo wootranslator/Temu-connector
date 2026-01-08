@@ -21,7 +21,6 @@
                 <header>
                     <button name="action_confirm" string="Confirm" type="object" invisible="state == 'confirmed'"/>
                     <button name="action_draft" string="Reset to Draft" type="object" invisible="state == 'draft'"/>
-                    <button name="action_sync_shipping_methods" string="Sync Shipping Methods" type="object" invisible="state != 'confirmed'" class="btn-secondary"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
