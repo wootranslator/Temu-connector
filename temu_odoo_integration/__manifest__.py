@@ -8,7 +8,7 @@
         Includes SKU mapping, fiscal position mapping, payment mapping, and tracking synchronization.
     """,
     'author': 'Antigravity',
-    'depends': ['sale_management', 'stock', 'delivery'],
+    'depends': ['sale_management', 'stock', 'delivery', 'crm', 'account'],
     'data': [
         'security/ir.model.access.csv',
         'data/temu_data.xml',
