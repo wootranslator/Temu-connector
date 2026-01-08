@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class TemuConnector(models.Model):
     _name = 'temu.connector'
